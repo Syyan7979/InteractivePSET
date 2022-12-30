@@ -1,38 +1,33 @@
 -- Create User
 DROP PROCEDURE IF EXISTS create_user;
 CREATE PROCEDURE create_user(
-	IN uID VARCHAR(14),
-    IN uName VARCHAR(15),
-    IN uEmail VARCHAR(320),
+	IN uID INT,
+    IN uName VARCHAR(100),
+    IN uEmail VARCHAR(100),
     IN uPassword VARCHAR (128),
     IN uDP VARCHAR(255),
-    IN firstName VARCHAR(64),
-    IN lastName VARCHAR(64),
-    IN bDay BIGINT,
-    IN a INT,
-    IN tchr TINYINT
+    IN firstName VARCHAR(50),
+    IN lastName VARCHAR(50),
+    IN uRole CHAR(1) -- T if teacher, S if student
 )
 BEGIN
-INSERT INTO
-	user
-(user_id, user_name, user_email, user_password, user_dp, first_name, last_name, birthday, age, teacher)
+	INSERT INTO
+		users
+		(user_id, user_name, user_email, user_password, user_dp, first_name, last_name, role)
 	VALUES
-(uID, uName, uEmail, uPassword, uDP, firstName, lastName, bDay, a, tchr);
+		(uID, uName, uEmail, uPassword, uDP, firstName, lastName, uRole);
 END;
 
 -- Delete User
 DROP PROCEDURE IF EXISTS delete_user;
 CREATE PROCEDURE delete_user(
-	IN uID VARCHAR(14)
+	IN uID INT
 )
 BEGIN
-DELETE FROM course WHERE student_id = uID OR teacher_id = uID;
-DELETE FROM pset WHERE student_id = uID;
-DELETE FROM item WHERE student_id = uID;
-DELETE FROM user WHERE user_id = uID;
+DELETE FROM users WHERE user_id = uID;
 END;
 
--- Patching User
+-- Patching User - not updated for new schema
 CREATE PROCEDURE patch_user(
     IN uID VARCHAR(14),
     IN uName VARCHAR(15),
@@ -47,7 +42,7 @@ CREATE PROCEDURE patch_user(
 )
 BEGIN
 UPDATE
-    user
+    users
 SET
     user_name = COALESCE(user_name, uName),
     user_email = COALESCE(user_email, uEmail),
@@ -65,13 +60,13 @@ END;
 -- Getting Specific User
 DROP PROCEDURE IF EXISTS get_user;
 CREATE PROCEDURE get_user(
-	IN uID VARCHAR(14)
+	IN uID INT
 )
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, birthday, age, teacher
+	user_id, user_name, user_email, user_dp, first_name, last_name, role
 FROM
-	user
+	users
 WHERE user_id = uID;
 END;
 
@@ -80,61 +75,61 @@ DROP PROCEDURE IF EXISTS get_all_users;
 CREATE PROCEDURE get_all_users()
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, birthday, age, teacher
+	user_id, user_name, user_email, user_dp, first_name, last_name, role
 FROM
-	user;
+	users;
 END;
 
 -- Getting All students
 DROP PROCEDURE IF EXISTS get_students;
 CREATE PROCEDURE get_students(
-	IN uID VARCHAR(14)
+	IN uID INT
 )
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, birthday, age, teacher
+	user_id, user_name, user_email, user_dp, first_name, last_name, role
 FROM
-	user
-WHERE teacher = 0;
+	users
+WHERE role = 'S';
 END;
 
 -- Getting All teachers
 DROP PROCEDURE IF EXISTS get_teachers;
 CREATE PROCEDURE get_teachers(
-	IN uID VARCHAR(14)
+	IN uID INT
 )
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, birthday, age, teacher
+	user_id, user_name, user_email, user_dp, first_name, last_name, role
 FROM
-	user
-WHERE teacher = 1;
+	users
+WHERE role = 'T';
 END;
 
 -- Login Validation via email
 DROP PROCEDURE IF EXISTS email_login_validation;
 CREATE PROCEDURE email_login_validation(
-	IN uEmail VARCHAR(320),
+	IN uEmail VARCHAR(100),
     IN uPassword VARCHAR(128)
 )
 BEGIN
 SELECT 
 	user_id, user_password
 FROM
-	user
+	users
 WHERE user_email = uEmail AND user_password = uPassword;
 END;
 
 -- Login Validation via username
-DROP PROCEDURE IF EXISTS username_login_validation;
-CREATE PROCEDURE username_login_validation(
-	IN uName VARCHAR(15),
+DROP PROCEDURE IF EXISTS user_name_login_validation;
+CREATE PROCEDURE user_name_login_validation(
+	IN uName VARCHAR(100),
     IN uPassword VARCHAR(128)
 )
 BEGIN
 SELECT 
 	user_id, user_password
 FROM
-	user
+	users
 WHERE user_name = uName AND user_password = uPassword;
 END;
