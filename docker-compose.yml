@@ -25,9 +25,9 @@ services:
         command: "bash start.sh db_server:3306"
 
     db_server:
-        image: mysql:5.7
+        image: mysql:latest
         ports:
-            - "25012:25012"
+            - "3306:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=password
             - MYSQL_DATABASE=intearactivepsetDB
