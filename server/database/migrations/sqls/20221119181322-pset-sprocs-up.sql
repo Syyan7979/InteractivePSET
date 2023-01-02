@@ -43,12 +43,12 @@ BEGIN
 UPDATE
     pset
 SET
-	course_id = COALESCE(course_id, cID),
-    pset_title = COALESCE(pset_title, pTitle),
-    pset_desc = COALESCE(pset_desc, pDesc),
-    due_datetime = COALESCE(due_datetime, dDatetime),
-    published = COALESCE(published, pub),
-    float_tolerance = COALESCE(float_tolerance, fTolerance)
+	course_id = COALESCE(cID, course_id),
+    pset_title = COALESCE(pTitle, pset_title),
+    pset_desc = COALESCE(pDesc, pset_desc),
+    due_datetime = COALESCE(dDatetime, due_datetime),
+    published = COALESCE(pub, published),
+    float_tolerance = COALESCE(fTolerance, float_tolerance)
 WHERE pset_id = pID;
 END;
 

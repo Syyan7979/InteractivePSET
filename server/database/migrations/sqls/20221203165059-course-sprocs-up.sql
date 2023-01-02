@@ -60,10 +60,10 @@ BEGIN
 UPDATE
     course
 SET
-    course_name = COALESCE(course_name, cName),
-    course_desc = COALESCE(course_desc, cDesc),
-    enrollment_key = COALESCE(enrollment_key, eKey),
-    teacher_name = COALESCE(teacher_id, tID)
+    course_name = COALESCE(cName, course_name),
+    course_desc = COALESCE(cDesc, course_desc),
+    enrollment_key = COALESCE(eKey, enrollment_key),
+    teacher_name = COALESCE(tID, teacher_id)
 WHERE
     course_id = cID;
 END;

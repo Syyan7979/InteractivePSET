@@ -57,14 +57,14 @@ BEGIN
 UPDATE
     attempt
 SET
-	item_id = COALESCE(item_id, iID),
-	pset_id = COALESCE(pset_id, pID),
-	course_id = COALESCE(course_id, cID),
-	student_id = COALESCE(student_id, sID),
-	attempt_id = COALESCE(attempt_id, iNum),
-	student_feedback = COALESCE(student_feedback, sFeedback),
-	is_correct = COALESCE(is_correct, isCorrect),
-	float_answer = COALESCE(float_answer, floatAns),
-	submit_datetime = COALESCE(submit_datetime, submitDate)
+	item_id = COALESCE(iID, item_id),
+	pset_id = COALESCE(pID, pset_id),
+	course_id = COALESCE(cID, course_id),
+	student_id = COALESCE(sID, student_id),
+	attempt_id = COALESCE(iNum, attempt_id),
+	student_feedback = COALESCE(sFeedback, student_feedback),
+	is_correct = COALESCE(isCorrect, is_correct),
+	float_answer = COALESCE(floatAns, float_answer),
+	submit_datetime = COALESCE(submitDate, submit_datetime)
 WHERE attempt_id = aID;
 END;

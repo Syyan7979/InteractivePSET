@@ -52,13 +52,13 @@ BEGIN
 UPDATE
     item
 SET
-	pset_id = COALESCE(pset_id, pID),
-	course_id = COALESCE(course_id, cID),
-	render_order = COALESCE(render_order, iNum),
-	problem = COALESCE(problem, prob),
-	post_problem = COALESCE(post_problem, postProb),
-	points = COALESCE(points, pointVal),
-	parent = COALESCE(parent, parentID),
+	pset_id = COALESCE(pID, pset_id),
+	course_id = COALESCE(cID, course_id),
+	render_order = COALESCE(iNum, render_order),
+	problem = COALESCE(prob, problem),
+	post_problem = COALESCE(postProb, post_problem),
+	points = COALESCE(pointVal, points),
+	parent = COALESCE(parentID, parent),
 WHERE item_id = iID;
 END;
 

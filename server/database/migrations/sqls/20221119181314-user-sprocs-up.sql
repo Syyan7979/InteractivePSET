@@ -41,12 +41,12 @@ BEGIN
 UPDATE
     users
 SET
-    user_name = COALESCE(user_name, uName),
-    email = COALESCE(email, uEmail),
-    user_password = COALESCE(user_password, uPassword),
-    user_dp = COALESCE(user_dp, uDP),
-    first_name = COALESCE(first_name, firstName),
-    last_name = COALESCE(last_name, lastName),
+    user_name = COALESCE(uName, user_name),
+    email = COALESCE(uEmail, email),
+    user_password = COALESCE(uPassword, user_password),
+    user_dp = COALESCE(uDP, user_dp),
+    first_name = COALESCE(firstName, first_name),
+    last_name = COALESCE(lastName, last_name),
     role = COALESCE(uRole, role)
 WHERE
     user_id = uID;
