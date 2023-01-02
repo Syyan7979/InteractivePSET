@@ -1,141 +1,159 @@
 -- create new course
 DROP PROCEDURE IF EXISTS create_course;
 CREATE PROCEDURE create_course(
-    IN cID VARCHAR(14),
-    IN cName VARCHAR(15),
-    IN tchrID VARCHAR (14),
-    IN tchrName VARCHAR (128),
+    IN cName VARCHAR(100),
     IN cDesc VARCHAR(255),
-    IN eKey VARCHAR(128)
+    IN eKey VARCHAR(128),
+    IN tID INT
 )
 BEGIN
 INSERT INTO
     course
-(course_id, course_name, student_id, teacher_id, teacher_name, course_desc, enrollment_key)
+(course_name, course_desc, enrollment_key, teacher_id)
 VALUES
-(cID, cName, 'default_value', tchrID, tchrName, cDesc, eKey);
+(cName, cDesc, eKey, tID);
 END;
 
 -- enroll course
 DROP PROCEDURE IF EXISTS enroll_course;
 CREATE PROCEDURE enroll_course(
-    IN cID VARCHAR(14),
-    IN cName VARCHAR(15),
-    IN sID VARCHAR(14),
-    IN tchrID VARCHAR (14),
-    IN tchrName VARCHAR (128),
-    IN cDesc VARCHAR(255),
-    IN eKey VARCHAR(128)
+    IN cID INT,
+    IN sID INT
 )
 BEGIN
-CREATE TEMPORARY TABLE StudentTemp(
-    `student_id` VARCHAR(14) NOT NULL
-);
-INSERT INTO StudentTemp 
-    (student_id)
-VALUES
-    (sID);
 INSERT INTO
-    course
-(course_id, course_name, student_id, teacher_id, teacher_name, course_desc, enrollment_key)
+	course_enroll
+(course_id, student_id)
 VALUES
-(cID, cName, sID, tchrID, tchrName, cDesc, eKey);
-INSERT INTO pset 
-    (pset_id, course_id, student_id, pset_num, pset_title, pset_desc, start_time, duration, due_date, submit_time, items_count, score)
-SELECT 
-    pset_id, course_id, student_id, pset_num, pset_title, pset_desc, start_time, duration, due_date, submit_time, items_count, score
-FROM
-    StudentTemp a 
-        CROSS JOIN 
-    (SELECT DISTINCT
-        pset_id, course_id, pset_num, pset_title, pset_desc, start_time, duration, due_date, submit_time, items_count, score 
-    FROM 
-        pset 
-    WHERE course_id = cID) b;
-INSERT INTO item
-    (item_id, pset_id, student_id, item_num, problem, correct_answer, student_answer, feedback, score)
-SELECT 
-    item_id, pset_id, student_id, item_num, problem, correct_answer, student_answer, feedback, score
-FROM
-    StudentTemp a 
-        CROSS JOIN 
-    (SELECT DISTINCT 
-        item_id, pset_id, item_num, problem, correct_answer, student_answer, feedback, score 
-    FROM item WHERE pset_id in 
-        (SELECT DISTINCT pset_id FROM pset WHERE course_id = cID)) b;
-DROP TEMPORARY TABLE StudentTemp;
+(cID, sID);
 END;
 
 -- delete course
 DROP PROCEDURE IF EXISTS delete_course;
 CREATE PROCEDURE delete_course(
-    IN cID VARCHAR(14)
+    IN cID INT
 )
 BEGIN
-DELETE FROM item WHERE pset_id in (SELECT DISTINCT pset_id FROM pset WHERE course_id = cID);
-DELETE FROM pset WHERE course_id = cID;
 DELETE FROM course WHERE course_id = cID;
 END;
 
 -- drop course
 DROP PROCEDURE IF EXISTS drop_course;
 CREATE PROCEDURE drop_course(
-    IN cID VARCHAR(14),
-    IN sID VARCHAR(14)
+    IN cID INT,
+    IN sID INT
 )
 BEGIN
-DELETE FROM item WHERE pset_id IN (SELECT DISTINCT pset_id FROM pset WHERE course_id = cID) AND student_id = sID;
-DELETE FROM pset WHERE course_id = cID AND student_id = sID;
-DELETE FROM course WHERE course_id = cID AND student_id = sID;
+DELETE FROM course_enroll WHERE course_id = cID AND student_id = sID;
 END;
 
 -- patch course
 DROP PROCEDURE IF EXISTS patch_course;
 CREATE PROCEDURE patch_course(
-    IN cID VARCHAR(14),
-    IN cName VARCHAR(15),
-    IN sID VARCHAR(14),
-    IN tchrID VARCHAR (14),
-    IN tchrName VARCHAR (128),
+	IN cID INT,
+    IN cName VARCHAR(100),
     IN cDesc VARCHAR(255),
-    IN eKey VARCHAR(128)
+    IN eKey VARCHAR(128),
+    IN tID INT
 )
 BEGIN
 UPDATE
     course
 SET
     course_name = COALESCE(course_name, cName),
-    student_id = COALESCE(student_id, sID),
-    teacher_id = COALESCE(teacher_id, tchrID),
-    teacher_name = COALESCE(teacher_name, tchrName),
     course_desc = COALESCE(course_desc, cDesc),
-    enrollment_key = COALESCE(enrollment_key, eKey)
+    enrollment_key = COALESCE(enrollment_key, eKey),
+    teacher_name = COALESCE(teacher_id, tID)
 WHERE
     course_id = cID;
 END;
 
--- get specific course
-DROP PROCEDURE IF EXISTS get_course;
+-- get specific course - student
+DROP PROCEDURE IF EXISTS get_course_student;
 CREATE PROCEDURE get_course(
-    IN cID VARCHAR(14)
+    IN cID INT,
+    IN sID INT
 )
 BEGIN
-SELECT * FROM course WHERE course_id = cID AND student_id = 'default_value';
+SELECT
+	c.course_name,
+    c.course_desc,
+    c.teacher_id
+FROM course_enroll ce
+INNER JOIN course c ON ce.course_id = c.course_id
+WHERE ce.course_id = cID AND ce.student_id = sID
+LIMIT 1;
 END;
 
--- get all courses
-DROP PROCEDURE IF EXISTS get_all_courses;
-CREATE PROCEDURE get_all_courses()
+-- get specific course - teacher
+DROP PROCEDURE IF EXISTS get_course_teacher;
+CREATE PROCEDURE get_course(
+    IN cID INT,
+    IN tID INT
+)
 BEGIN
-SELECT * FROM course WHERE  student_id = 'default_value';
+SELECT
+	c.course_name,
+    c.course_desc,
+    c.enrollment_key
+FROM course c
+WHERE c.course_id = cID and c.teacher_id = tID
+LIMIT 1;
+END;
+
+-- get all courses - student
+DROP PROCEDURE IF EXISTS get_all_courses_student;
+CREATE PROCEDURE get_all_courses_student(
+	IN sID INT
+)
+BEGIN
+SELECT
+	ce.course_id,
+	c.course_name,
+    c.course_desc,
+    c.teacher_id
+FROM course_enroll ce
+INNER JOIN course c ON ce.course_id = c.course_id
+WHERE ce.student_id = sID;
+END;
+
+-- get all courses - teacher
+DROP PROCEDURE IF EXISTS get_all_courses_teacher;
+CREATE PROCEDURE get_all_courses_teacher(
+	IN tID INT
+)
+BEGIN
+SELECT
+	c.course_id,
+	c.course_name,
+    c.course_desc,
+    c.enrollment_key
+FROM course c
+WHERE c.teacher_id = tID;
 END;
 
 -- enroll validation
 DROP PROCEDURE IF EXISTS enroll_validation;
 CREATE PROCEDURE enroll_validation(
-    IN cID VARCHAR(14),
+    IN cID INT,
     IN eKey VARCHAR(128)
 )
 BEGIN
-SELECT * FROM course WHERE course_id = cID AND enrollment_key = eKey;
+SELECT EXISTS(SELECT * FROM course WHERE course_id = cID AND enrollment_key = eKey LIMIT 1) as match_exists;
+END;
+
+-- get all students in course
+DROP PROCEDURE IF EXISTS get_students_in_course;
+CREATE PROCEDURE get_students_in_course(
+    IN cID INT
+)
+BEGIN
+SELECT 
+    u.user_id,
+    u.user_name,
+    u.first_name,
+    u.last_name
+FROM users u
+INNER JOIN course_enroll ce ON u.user_id = ce.student_id
+WHERE ce.course_id = cID;
 END;

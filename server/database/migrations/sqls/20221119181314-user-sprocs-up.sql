@@ -1,10 +1,9 @@
 -- Create User
 DROP PROCEDURE IF EXISTS create_user;
 CREATE PROCEDURE create_user(
-	IN uID INT,
     IN uName VARCHAR(100),
     IN uEmail VARCHAR(100),
-    IN uPassword VARCHAR (128),
+    IN uPassword VARCHAR(128),
     IN uDP VARCHAR(255),
     IN firstName VARCHAR(50),
     IN lastName VARCHAR(50),
@@ -13,9 +12,9 @@ CREATE PROCEDURE create_user(
 BEGIN
 	INSERT INTO
 		users
-		(user_id, user_name, user_email, user_password, user_dp, first_name, last_name, role)
+		(user_name, user_email, user_password, user_dp, first_name, last_name, role)
 	VALUES
-		(uID, uName, uEmail, uPassword, uDP, firstName, lastName, uRole);
+		(uName, uEmail, uPassword, uDP, firstName, lastName, uRole);
 END;
 
 -- Delete User
@@ -27,32 +26,28 @@ BEGIN
 DELETE FROM users WHERE user_id = uID;
 END;
 
--- Patching User - not updated for new schema
+-- Patching User
 CREATE PROCEDURE patch_user(
-    IN uID VARCHAR(14),
-    IN uName VARCHAR(15),
-    IN uEmail VARCHAR(320),
-    IN uPassword VARCHAR (128),
+    IN uID INT,
+    IN uName VARCHAR(100),
+    IN uEmail VARCHAR(100),
+    IN uPassword VARCHAR(128),
     IN uDP VARCHAR(255),
-    IN firstName VARCHAR(64),
-    IN lastName VARCHAR(64),
-    IN bDay BIGINT,
-    IN a INT,
-    IN tchr TINYINT
+    IN firstName VARCHAR(50),
+    IN lastName VARCHAR(50),
+    IN uRole CHAR(1)
 )
 BEGIN
 UPDATE
     users
 SET
     user_name = COALESCE(user_name, uName),
-    user_email = COALESCE(user_email, uEmail),
+    email = COALESCE(email, uEmail),
     user_password = COALESCE(user_password, uPassword),
     user_dp = COALESCE(user_dp, uDP),
     first_name = COALESCE(first_name, firstName),
     last_name = COALESCE(last_name, lastName),
-    birthday = COALESCE(birthday, bDay),
-    age = COALESCE(age, a),
-    teacher = COALESCE(teacher, tchr)
+    role = COALESCE(uRole, role)
 WHERE
     user_id = uID;
 END;

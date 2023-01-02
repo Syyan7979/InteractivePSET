@@ -1,80 +1,64 @@
 -- Create Item
 DROP PROCEDURE IF EXISTS create_item;
 CREATE PROCEDURE create_item(
-    IN iID VARCHAR(14),
-    IN pID VARCHAR(14),
-    IN iNum INT,
+    IN pID INT,
+    IN cID INT,
+    IN iNum SMALLINT,
     IN prob VARCHAR(1000),
-    IN cAns VARCHAR(1000)
+    IN postProb VARCHAR(300),
+    IN pointVal FLOAT,
+    IN parentID INT
 )
 BEGIN
-CREATE TEMPORARY TABLE itemDetails(
-    `item_id` VARCHAR(14) NOT NULL,
-    `pset_id` VARCHAR(14) NOT NULL,
-    `item_num` INT NOT NULL,
-    `problem` VARCHAR(1000) NOT NULL,
-    `correct_answer` VARCHAR(1000) NOT NULL,
-    `student_answer` VARCHAR(1000),
-    `feedback` VARCHAR(1000),
-    `score` FLOAT
-);
-INSERT INTO itemDetails
-    (item_id, pset_id, item_num, problem, correct_answer, student_answer, feedback, score) 
+INSERT INTO item
+    (pset_id, course_id, render_order, problem, post_problem, points, parent) 
 VALUES
-    (iID, pID, iNum, prob, cAns, NULL, NULL, NULL);
-INSERT INTO item 
-    (item_id, pset_id, student_id, item_num, problem, correct_answer, student_answer, feedback, score)
-SELECT 
-    item_id, pset_id, student_id, item_num, problem, correct_answer, student_answer, feedback, score
-FROM
-    itemDetails a CROSS JOIN (SELECT student_id FROM pset WHERE pset_id = pID) b;
-DROP TEMPORARY TABLE itemDetails;
-END;
+    (pID, cID, iNum, prob, postProb, pointVal, parentID);
 
 -- Delete Item
 DROP PROCEDURE IF EXISTS delete_item;
 CREATE PROCEDURE delete_item(
-    IN iID VARCHAR(14)
+    IN iID INT
 )
 BEGIN
-DELETE FROM item where item_id = iID;
+DELETE FROM item WHERE item_id = iID;
 END;
 
--- General Item patching
+-- Read items from Pset in render order
+DROP PROCEDURE IF EXISTS read_items_from_pset;
+CREATE PROCEDURE read_items_from_pset(
+    IN pID INT
+)
+BEGIN
+SELECT i1.*
+FROM item AS i1
+LEFT JOIN item AS i2 ON i1.pset_id = pID AND i1.parent = i2.item_id
+ORDER BY i1.parent, i1.render_order;
+END;
+
+-- Item patching
 DROP PROCEDURE IF EXISTS general_item_patching;
 CREATE PROCEDURE general_item_patching(
-    IN iID VARCHAR(14),
-    IN iNum INT,
+    IN pID INT,
+    IN cID INT,
+    IN iNum SMALLINT,
     IN prob VARCHAR(1000),
-    IN cAns VARCHAR(1000)
+    IN postProb VARCHAR(300),
+    IN pointVal FLOAT,
+    IN parentID INT
 )
 BEGIN
 UPDATE
     item
 SET
-    item_num = COALESCE(item_num, iNum),
-    problem = COALESCE(problem, prob),
-    correct_answer = COALESCE(correct_answer, cAns)
+	pset_id = COALESCE(pset_id, pID),
+	course_id = COALESCE(course_id, cID),
+	render_order = COALESCE(render_order, iNum),
+	problem = COALESCE(problem, prob),
+	post_problem = COALESCE(post_problem, postProb),
+	points = COALESCE(points, pointVal),
+	parent = COALESCE(parent, parentID),
 WHERE item_id = iID;
-END;
-
--- Specific Item patching
-DROP PROCEDURE IF EXISTS specific_item_patching;
-CREATE PROCEDURE specific_item_patching(
-    IN iID VARCHAR(14),
-    IN sID VARCHAR(14),
-    IN sAns VARCHAR(1000),
-    IN fback VARCHAR(1000),
-    IN scr FLOAT
-)
-BEGIN
-UPDATE
-    item
-SET
-    student_answer = COALESCE(student_answer, sAns),
-    feedback = COALESCE(feedback, fback),
-    score = COALESCE(score, scr)
-WHERE item_id = iID AND student_id = sID;
 END;
 
 -- Get specific item from item_id and student_id
