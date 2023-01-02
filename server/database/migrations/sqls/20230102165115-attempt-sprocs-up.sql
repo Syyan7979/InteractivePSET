@@ -1,22 +1,4 @@
 /* Replace with your SQL commands */
-CREATE TABLE IF NOT EXISTS `attempt`(
-    `item_id` INT NOT NULL,
-    `pset_id` INT NOT NULL,
-    `course_id` INT NOT NULL,
-    `student_id` INT NOT NULL,
-    `attempt_id` INT NOT NULL AUTO_INCREMENT,
-    `student_feedback` VARCHAR(1000),
-	`is_correct` CHAR(1) NOT NULL,
-    `float_answer` FLOAT NOT NULL,
-    `submit_datetime` DATETIME NOT NULL,
-    PRIMARY KEY (`attempt_id`),
-    FOREIGN KEY (`item_id`) REFERENCES item(`item_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`pset_id`) REFERENCES pset(`pset_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`student_id`) REFERENCES users(`user_id`) ON DELETE CASCADE
-);
-
-
 -- Create Attempt
 DROP PROCEDURE IF EXISTS create_attempt;
 CREATE PROCEDURE create_attempt(
@@ -57,7 +39,7 @@ FROM attempt
 WHERE item_id = iID;
 END;
 
--- Item patching
+-- Attempt patching
 DROP PROCEDURE IF EXISTS general_attempt_patching;
 CREATE PROCEDURE general_attempt_patching(
 	IN aID INT,
