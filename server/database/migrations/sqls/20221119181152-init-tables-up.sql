@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `attempt`(
     `float_answer` FLOAT,
     `submit_datetime` DATETIME NOT NULL,
     PRIMARY KEY (`attempt_id`),
-    PRIMARY KEY (`item_id`, `pset_id`, `course_id`, `student_id`),
     FOREIGN KEY (`item_id`) REFERENCES item(`item_id`) ON DELETE CASCADE,
     FOREIGN KEY (`pset_id`) REFERENCES pset(`pset_id`) ON DELETE CASCADE,
     FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE,
@@ -82,9 +81,9 @@ CREATE TABLE IF NOT EXISTS `feedback`(
 	`is_correct` CHAR(1) NOT NULL,
     `float_answer` FLOAT,
     `submit_datetime` DATETIME NOT NULL,
-    PRIMARY KEY (`item_id`, `pset_id`, `course_id`, `student_id`, `feedback_id`),
-    PRIMARY KEY (`item_id`, `pset_id`, `course_id`, `student_id`),
+    PRIMARY KEY (`feedback_id`),
     FOREIGN KEY (`item_id`) REFERENCES item(`item_id`) ON DELETE CASCADE,
     FOREIGN KEY (`pset_id`) REFERENCES pset(`pset_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE
+    FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`student_id`) REFERENCES users(`user_id`) ON DELETE CASCADE
 );
