@@ -14,6 +14,7 @@ INSERT INTO item
     (pset_id, course_id, render_order, problem, post_problem, points, parent) 
 VALUES
     (pID, cID, iNum, prob, postProb, pointVal, parentID);
+END;
 
 -- Delete Item
 DROP PROCEDURE IF EXISTS delete_item;
@@ -58,7 +59,7 @@ SET
 	problem = COALESCE(prob, problem),
 	post_problem = COALESCE(postProb, post_problem),
 	points = COALESCE(pointVal, points),
-	parent = COALESCE(parentID, parent),
+	parent = COALESCE(parentID, parent)
 WHERE item_id = iID;
 END;
 

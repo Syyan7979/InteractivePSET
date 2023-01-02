@@ -27,6 +27,7 @@ DELETE FROM users WHERE user_id = uID;
 END;
 
 -- Patching User
+DROP PROCEDURE IF EXISTS patch_user;
 CREATE PROCEDURE patch_user(
     IN uID INT,
     IN uName VARCHAR(100),

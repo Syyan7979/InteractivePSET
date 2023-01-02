@@ -70,7 +70,7 @@ END;
 
 -- get specific course - student
 DROP PROCEDURE IF EXISTS get_course_student;
-CREATE PROCEDURE get_course(
+CREATE PROCEDURE get_course_student(
     IN cID INT,
     IN sID INT
 )
@@ -87,7 +87,7 @@ END;
 
 -- get specific course - teacher
 DROP PROCEDURE IF EXISTS get_course_teacher;
-CREATE PROCEDURE get_course(
+CREATE PROCEDURE get_course_teacher(
     IN cID INT,
     IN tID INT
 )

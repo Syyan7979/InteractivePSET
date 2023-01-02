@@ -84,6 +84,5 @@ CREATE TABLE IF NOT EXISTS `feedback`(
     PRIMARY KEY (`feedback_id`),
     FOREIGN KEY (`item_id`) REFERENCES item(`item_id`) ON DELETE CASCADE,
     FOREIGN KEY (`pset_id`) REFERENCES pset(`pset_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`student_id`) REFERENCES users(`user_id`) ON DELETE CASCADE
+    FOREIGN KEY (`course_id`) REFERENCES course(`course_id`) ON DELETE CASCADE
 );
