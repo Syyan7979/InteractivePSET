@@ -32,7 +32,8 @@ CREATE PROCEDURE read_items_from_pset(
 BEGIN
 SELECT i1.*
 FROM item AS i1
-LEFT JOIN item AS i2 ON i1.pset_id = pID AND i1.parent = i2.item_id
+LEFT JOIN item AS i2 ON i1.parent = i2.item_id
+WHERE i1.pset_id = pID
 ORDER BY i1.parent, i1.render_order;
 END;
 
@@ -59,26 +60,6 @@ SET
 	points = COALESCE(points, pointVal),
 	parent = COALESCE(parent, parentID),
 WHERE item_id = iID;
-END;
-
--- Get specific item from item_id and student_id
-DROP PROCEDURE IF EXISTS get_specific_item;
-CREATE PROCEDURE get_specific_item(
-    IN iID VARCHAR(14),
-    IN sID VARCHAR(14)
-)
-BEGIN
-SELECT * FROM item WHERE item_id = iID AND student_id = sID;
-END;
-
--- Get items from pset_id and a student_id
-DROP PROCEDURE IF EXISTS get_pset_items;
-CREATE PROCEDURE get_pset_items(
-    IN pID VARCHAR(14),
-    IN sID VARCHAR(14)
-)
-BEGIN
-SELECT * FROM item WHERE pset_id = pID AND student_id = sID;
 END;
 
 -- Get all items
