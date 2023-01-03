@@ -41,6 +41,7 @@ END;
 -- Item patching
 DROP PROCEDURE IF EXISTS general_item_patching;
 CREATE PROCEDURE general_item_patching(
+    IN iID INT,
     IN pID INT,
     IN cID INT,
     IN iNum SMALLINT,

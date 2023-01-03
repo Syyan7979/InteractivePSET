@@ -9,13 +9,13 @@ CREATE PROCEDURE create_attempt(
     IN sFeedback VARCHAR(1000),
     IN isCorrect CHAR(1),
     IN floatAns FLOAT,
-    IN submitDate DATETIME
+    IN submitDate BIGINT
 )
 BEGIN
 INSERT INTO attempt
-    (item_id, pset_id, course_id, student_id, attempt_id, student_feedback, is_correct, float_answer, submit_datetime) 
+    (item_id, pset_id, course_id, student_id, student_feedback, is_correct, float_answer, submit_datetime) 
 VALUES
-    (iID, pID, cID, sID, iNum, sFeedback, isCorrect, floatAns, submitDate);
+    (iID, pID, cID, sID, sFeedback, isCorrect, floatAns, submitDate);
 END;
 
 -- Delete Item
@@ -30,12 +30,13 @@ END;
 -- Read attempts from item
 DROP PROCEDURE IF EXISTS read_attempts_from_item;
 CREATE PROCEDURE read_attempts_from_item(
-    IN iID INT
+    IN iID INT,
+    IN sID INT
 )
 BEGIN
 SELECT *
 FROM attempt
-WHERE item_id = iID;
+WHERE item_id = iID AND student_id = sID;
 END;
 
 -- Attempt patching
@@ -49,7 +50,7 @@ CREATE PROCEDURE general_attempt_patching(
     IN sFeedback VARCHAR(1000),
     IN isCorrect CHAR(1),
     IN floatAns FLOAT,
-    IN submitDate DATETIME
+    IN submitDate BIGINT
 )
 BEGIN
 UPDATE

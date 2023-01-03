@@ -63,7 +63,7 @@ SET
     course_name = COALESCE(cName, course_name),
     course_desc = COALESCE(cDesc, course_desc),
     enrollment_key = COALESCE(eKey, enrollment_key),
-    teacher_name = COALESCE(tID, teacher_id)
+    teacher_id = COALESCE(tID, teacher_id)
 WHERE
     course_id = cID;
 END;

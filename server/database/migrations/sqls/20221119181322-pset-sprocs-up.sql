@@ -3,10 +3,8 @@ DROP PROCEDURE IF EXISTS create_pset;
 CREATE PROCEDURE create_pset(
     IN cID INT,
     IN pTitle VARCHAR(100),
-    IN pset_order SMALLINT,
     IN pDesc VARCHAR(255),
-    IN pOrder SMALLINT,
-    IN dDatetime DATETIME,
+    IN dDatetime BIGINT,
     IN pub CHAR(1),
     IN fTolerance FLOAT
 )
@@ -32,10 +30,8 @@ CREATE PROCEDURE patch_pset(
     IN pID INT,
     IN cID INT,
     IN pTitle VARCHAR(100),
-    IN pset_order SMALLINT,
     IN pDesc VARCHAR(255),
-    IN pOrder SMALLINT,
-    IN dDatetime DATETIME,
+    IN dDatetime BIGINT,
     IN pub CHAR(1),
     IN fTolerance FLOAT
 )
@@ -69,7 +65,7 @@ CREATE PROCEDURE get_student_pset(
 )
 BEGIN
 SELECT * FROM course_enroll ce
-LEFT JOIN pset p ON ce.student_id = sID AND p.pset_id = ce.pset_id
+LEFT JOIN pset p ON ce.student_id = sID AND p.course_id = ce.course_id
 ORDER BY p.due_datetime;
 END;
 

@@ -12,7 +12,7 @@ CREATE PROCEDURE create_user(
 BEGIN
 	INSERT INTO
 		users
-		(user_name, user_email, user_password, user_dp, first_name, last_name, role)
+		(user_name, email, user_password, user_dp, first_name, last_name, role)
 	VALUES
 		(uName, uEmail, uPassword, uDP, firstName, lastName, uRole);
 END;
@@ -60,7 +60,7 @@ CREATE PROCEDURE get_user(
 )
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, role
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users
 WHERE user_id = uID;
@@ -71,19 +71,17 @@ DROP PROCEDURE IF EXISTS get_all_users;
 CREATE PROCEDURE get_all_users()
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, role
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users;
 END;
 
 -- Getting All students
 DROP PROCEDURE IF EXISTS get_students;
-CREATE PROCEDURE get_students(
-	IN uID INT
-)
+CREATE PROCEDURE get_students()
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, role
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users
 WHERE role = 'S';
@@ -91,12 +89,10 @@ END;
 
 -- Getting All teachers
 DROP PROCEDURE IF EXISTS get_teachers;
-CREATE PROCEDURE get_teachers(
-	IN uID INT
-)
+CREATE PROCEDURE get_teachers()
 BEGIN
 SELECT 
-	user_id, user_name, user_email, user_dp, first_name, last_name, role
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users
 WHERE role = 'T';
@@ -110,10 +106,10 @@ CREATE PROCEDURE email_login_validation(
 )
 BEGIN
 SELECT 
-	user_id, user_password
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users
-WHERE user_email = uEmail AND user_password = uPassword;
+WHERE email = uEmail AND user_password = uPassword;
 END;
 
 -- Login Validation via username
@@ -124,7 +120,7 @@ CREATE PROCEDURE user_name_login_validation(
 )
 BEGIN
 SELECT 
-	user_id, user_password
+	user_id, user_name, email, user_dp, first_name, last_name, role
 FROM
 	users
 WHERE user_name = uName AND user_password = uPassword;
