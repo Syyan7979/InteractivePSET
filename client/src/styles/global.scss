@@ -1,0 +1,189 @@
+@charset "utf-8";
+@import "./variables";
+@import "bulma";
+@import "./typography";
+
+html {
+    scroll-behavior: smooth;
+    transition-duration: 0.3s;
+}
+
+body {
+    cursor: default;
+    background-color: $white;
+}
+
+$colors: primary, light, dark, black, white, gray, light-gray;
+
+$colors-map: (
+  primary: $primary,
+  light: $light,
+  dark: $dark,
+  black: $black,
+  white: $white,
+  gray: $gray,
+  light-gray: $light-gray,
+);
+
+$text-background-colors-map: (
+  secondary: $white,
+);
+
+@each $i in $colors {
+    .has-border-bottom-#{$i} {
+        border-bottom: 1px solid map-get($colors-map, $i);
+        padding-bottom: 1.25rem;
+    }
+
+    .has-border-left-#{$i} {
+        border-radius: 25px;
+        border-style: solid;
+        border-width: 0 0 0 4px !important;
+        border-color: map-get($colors-map, $i);
+    }
+
+    .has-text-#{$i} {
+        color: map-get($colors-map, $i) !important;
+    }
+
+    .is-#{$i} {
+        background-color: map-get($colors-map, $i);
+        color: map-get($text-background-colors-map, $i);
+
+        &.button{
+        border-radius: 25px !important;
+        font-weight: bold;
+        }
+
+        &.button:hover {
+        border-radius: 25px !important;
+        color: map-get($text-background-colors-map, $i);
+        }
+
+        &.is-outlined {
+        background-color: transparent;
+        border-color: map-get($colors-map, $i);
+        color: map-get($colors-map, $i);
+        }
+
+        &.is-outlined:hover {
+        background-color: map-get($colors-map, $i);
+        color: map-get($text-background-colors-map, $i);
+        }
+    }
+
+    .has-background-#{$i} {
+        background-color: map-get($colors-map, $i);
+    }
+}
+
+.logo {
+    font-family: "Kodchasan", sans-serif;
+    font-size: 24px;
+}
+
+.menu {
+    position: fixed;
+    display: inline-block;
+    height: 100vh;
+    overflow-y: auto;
+    width: 275px;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 50px;
+
+    &-button {
+        display: flex;
+        border: none;
+        border-radius: 10px !important;
+        background-color: transparent;
+        color: $white !important;
+        font-weight: bold;
+        margin: 15px 0;
+        justify-content: flex-start;
+        text-decoration: none;
+
+        &:hover {
+            color: $white;
+            background-color: $dark !important;
+        }
+
+        &.active {
+            background-color: $white !important;
+            color: $dark !important;
+        }
+    }
+}
+
+.profile-button {
+    border-radius: 25px !important;
+    width: 225px;
+    position: absolute;
+    border: none;
+    background-color: $dark;
+    font-weight: bold;
+    margin: 15px -20px;
+    padding: 15px;
+    justify-content: flex-start;
+    bottom: 0;
+    height: fit-content;
+    text-decoration: none;
+    
+    & p {
+        color: $white;
+    }
+
+    &:hover {
+        & p {
+            color: $white;
+            filter: brightness(0.9);
+        }
+    }
+
+    &.active {
+        & p {
+            color: $dark !important;
+        }
+        background-color: $white !important;
+    }
+}
+
+.content {
+    display: inline-block;
+}
+
+.button {
+    border-radius: 5px;
+}
+
+.login-modal {
+    border: none !important;
+    border-radius: 25px;
+    width: 30vw;
+}
+
+.input {
+    border-radius: 15px;
+}
+
+.box {
+    border: 1px solid $light-gray;
+    box-shadow: none;
+}
+
+.enrollment {
+    &-container {
+        height: 80vh;
+    }
+    &-box {
+        display: flex;
+        flex-direction: column;
+        max-width: 30vw;
+        text-align: center;
+    } 
+}
+
+.cell {
+    border: 1px solid $gray;
+}

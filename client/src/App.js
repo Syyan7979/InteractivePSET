@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import 'bulma/css/bulma.min.css'
+import './styles/global.scss'
 
-function App() {
+import Layout from "./elements/Layout";
+
+// Student pages
+import Login from "./pages/Student/Login";
+import Register from "./pages/Student/Register";
+import Dashboard from "./pages/Student/Dashboard";
+import Enrollment from "./pages/Student/Enrollment";
+import Grades from "./pages/Student/Grades";
+import Profile from "./pages/Student/Profile";
+
+const App = () => {
+  // const userIsLoggedIn = false;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          hlllw
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        {/* Student pages */}
+        <Route path = "/" element={<Layout showMenu={false}/>}>
+          <Route path = "/login" element={<Login/>}/>
+          <Route path = "/register" element={<Register/>}/>
+        </Route>
+        
+        <Route path = "/" element={<Layout/>}>
+          <Route index element={<Dashboard/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/enrollment" element={<Enrollment/>}/>
+          <Route path="/grades" element={<Grades/>}/>
+          <Route path="/profile" element={<Profile/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
