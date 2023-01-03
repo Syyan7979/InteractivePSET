@@ -7,6 +7,10 @@ services:
             - 4200:4200
         volumes:
             - ./client/:/app
+        environment:
+            - WATCHPACK_POLLING=true
+            - JWT_SECRET=BCDIRY
+        stdin_open: true
 
     express_app:
         build: ./server
@@ -20,21 +24,23 @@ services:
             - DB_PORT=3306
             - DB_USER=root
             - DB_PASSWORD=password
+            - JWT_SECRET=BCDIRY
         depends_on:
             - db_server
         command: "bash start.sh db_server:3306"
 
     db_server:
-        image: mysql:5.7
+        image: mysql:latest
         ports:
-            - "25012:25012"
+            - "3306:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=password
             - MYSQL_DATABASE=intearactivepsetDB
 
     redis:
-        image: redis
+        image: redis:latest
         ports:
             - "6379:6379"
+        container_name: redis-container
 
 
