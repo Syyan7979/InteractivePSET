@@ -46,6 +46,12 @@ const Profile = () => {
                     options={degreeProgramsList}
                 />
             </div>
+            <div className="is-flex is-justify-content-center mt-5">
+                <button className="button is-light has-text-centered">
+                    Save Profile
+                </button>
+            </div>
+
         </div>
     )
 }

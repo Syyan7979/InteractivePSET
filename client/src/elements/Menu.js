@@ -23,6 +23,7 @@ const Menu = () => {
                 <MenuButton
                     label="Grades"
                     icon={faTable}
+                    state={{ dashboardCourse: null }}
                     link="/grades"
                 />
             </ul>
