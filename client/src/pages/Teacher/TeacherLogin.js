@@ -9,10 +9,10 @@ const Login = () => {
         <div className="modal is-active">
             <div className="modal-background has-background-primary"></div>
             <div className="modal-content box login-modal has-text-centered p-6">
-                 <Logo color="primary"/>
+                 <Logo color="primary" teacher/>
                  <input className="input is-medium mb-3" type="text" placeholder="E-mail"/>
                  <input className="input is-medium mb-3" type="password" placeholder="Password"/>
-                 <Link to="/dashboard" style={{textDecoration: "none"}}>
+                 <Link to="/teacher/dashboard" style={{textDecoration: "none"}}>
                     <button className="button is-light is-fullwidth is-medium">
                         Login
                     </button>
@@ -23,7 +23,7 @@ const Login = () => {
                  />
 
                  <hr className="has-background-light-gray"/>
-                 Don’t have an account? <Link to="/register">Sign up now</Link>
+                 Don’t have an account? <Link to="/teacher/apply">Apply for one</Link>
             </div>
         </div>
     )
