@@ -18,3 +18,13 @@ a {
     font-weight: bold;
     text-decoration: underline;
 }
+
+.is-deadline {
+    font-weight: bold;
+    color: $danger;
+}
+
+.is-complete {
+    font-weight: normal;
+    color: $success;
+}
