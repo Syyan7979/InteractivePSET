@@ -70,3 +70,12 @@ CREATE PROCEDURE get_all_items()
 BEGIN
 SELECT * FROM item;
 END;
+
+-- Get particular item
+DROP PROCEDURE IF EXISTS get_item;
+CREATE PROCEDURE get_item(
+    IN iID INT
+)
+BEGIN
+SELECT * FROM item WHERE item_id = iID;
+END;

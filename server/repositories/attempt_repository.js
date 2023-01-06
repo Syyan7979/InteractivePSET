@@ -69,6 +69,17 @@ class Attempt {
             throw error;
         };
     };
+
+    async getAttempt(attemptID) {
+        try {
+            let sql = `CALL get_attempt(?)`;
+            let [attempt, _] = await this.db.execute(sql, [attemptID]);
+            return attempt[0][0];
+        } catch (error) {
+            // need to do error handling
+            throw error;
+        };
+    };
 }
 
 module.exports = Attempt;

@@ -17,4 +17,6 @@ router.patch('', controller.itemPatching);
 
 router.get('', controller.getAllItems);
 
+router.get('/item', controller.getItem);
+
 module.exports = router;

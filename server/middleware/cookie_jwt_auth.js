@@ -15,4 +15,4 @@ cookieJwtAuth = (req, res, next) => {
     }
 };
 
-module.exports = cookieJwtAuth
+module.exports = cookieJwtAuth;

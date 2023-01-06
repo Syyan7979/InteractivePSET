@@ -66,3 +66,12 @@ SET
 	submit_datetime = COALESCE(submitDate, submit_datetime)
 WHERE attempt_id = aID;
 END;
+
+-- Get particular attempt
+DROP PROCEDURE IF EXISTS get_attempt;
+CREATE PROCEDURE get_attempt(
+    IN aID INT
+)
+BEGIN
+SELECT * FROM attempt WHERE attempt_id = aID;
+END;

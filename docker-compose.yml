@@ -11,7 +11,6 @@ services:
             - REACT_APP_JWT_SECRET=BCDIRY
             - WATCHPACK_POLLING=true
             - CHOKIDAR_USEPOLLING=true
-
         stdin_open: true
 
     express_app:

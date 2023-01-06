@@ -75,3 +75,12 @@ CREATE PROCEDURE get_all_psets()
 BEGIN
 SELECT * FROM pset;
 END;
+
+-- Get particular pset
+DROP PROCEDURE IF EXISTS get_pset;
+CREATE PROCEDURE get_pset(
+    IN pID INT
+)
+BEGIN
+SELECT * FROM pset WHERE pset_id = pID;
+END;

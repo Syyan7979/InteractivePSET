@@ -102,8 +102,27 @@ const AttemptsController = (attemptsRepository) => {
                     }
                 );
             };
+        },
+
+        async getAttempt(req, res) {
+            try {
+                const {attemptID} = req.query;
+                const data = await attemptsRepository.getAttempt(attemptID);
+                res.status(200).json(
+                    {
+                        message: `Attempt ${attemptID} successfully retrieved.`,
+                        data: data
+                    }
+                );
+            } catch (error) {
+                res.status(500).json(
+                    {
+                        message: error.message
+                    }
+                );
+            }
         }
-    }
+    };
 
     return controller;
 }

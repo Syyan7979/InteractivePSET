@@ -125,7 +125,7 @@ const PsetService = (PsetsRepository) => {
                         message: 'Psets successfully retrieved.',
                         data: data
                     }
-                )
+                );
             } catch (error) {
                 res.status(500).json(
                     {
@@ -133,6 +133,26 @@ const PsetService = (PsetsRepository) => {
                     }
                 );
             };
+        },
+
+        async getPset(req, res) {
+            try {
+                const {psetID} = req.query;
+                let data = await PsetsRepository.getPset(psetID);
+
+                res.status(200).json(
+                    {
+                        message: `Pset ${psetID} successfully retrieved.`,
+                        data: data
+                    }
+                )
+            } catch (error) {
+                res.status(500).json(
+                    {
+                        message: error.message
+                    }
+                );
+            }
         }
     };
 

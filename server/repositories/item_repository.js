@@ -76,6 +76,17 @@ class Item {
             throw error;
         };
     };
+
+    async getItem(itemID) {
+        try {
+            let sql = `CALL get_item(?)`;
+            let [item, _] = await this.db.execute(sql, [itemID]);
+            return item[0][0];
+        } catch (error) {
+            // need to do error handling
+            throw error;
+        };
+    };
 };
 
 module.exports = Item;

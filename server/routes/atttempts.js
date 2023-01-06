@@ -16,6 +16,6 @@ router.get('/item', controller.readAttemptsFromItem);
 
 router.patch('', controller.attemptPatch);
 
-
+router.get('/attempt', controller.getAttempt);
 
 module.exports = router;

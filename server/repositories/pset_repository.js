@@ -85,6 +85,17 @@ class Pset {
             throw error;
         };
     };
+
+    async getPset(psetID) {
+        try {
+            let sql = `CALL get_pset(?)`;
+            let [pset, _] = await this.db.execute(sql, [psetID]);
+            return pset[0][0];
+        } catch (error) {
+            // need to do error handling
+            throw error;
+        };
+    };
 };
 
 module.exports = Pset;

@@ -115,6 +115,25 @@ const ItemsController = (ItemsRepository) => {
                     }
                 );
             };
+        },
+
+        async getItem(req, res) {
+            try {
+                const {itemID} = req.query;
+                let data = await ItemsRepository.getItem(itemID);
+                res.status(200).json(
+                    {
+                        message: `Item ${itemID} successfully retrieved.`,
+                        data: data
+                    }
+                );
+            } catch (error) {
+                es.status(500).json(
+                    {
+                        message: error.message
+                    }
+                );
+            }
         }
     };
 

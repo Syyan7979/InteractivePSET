@@ -19,4 +19,6 @@ router.get('/student', controller.getStudentPset);
 
 router.get('', controller.getAllPsets);
 
+router.get('/pset', controller.getPset);
+
 module.exports = router;
