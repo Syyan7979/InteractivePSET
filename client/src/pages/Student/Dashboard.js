@@ -67,7 +67,6 @@ const Dashboard = () => {
                     )
                 })}
             </table>
-
             <h2>My active courses</h2>
             <hr className="is-fullwidth has-background-gray mb-2"/>
             <table className="table is-hoverable">
