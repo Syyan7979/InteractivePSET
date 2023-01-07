@@ -80,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `feedback`(
     `feedback` VARCHAR(1000) NOT NULL,
 	`is_correct` CHAR(1) NOT NULL,
     `float_answer` FLOAT NOT NULL,
-    `submit_datetime` BIGINT NOT NULL,
     PRIMARY KEY (`feedback_id`),
     FOREIGN KEY (`item_id`) REFERENCES item(`item_id`) ON DELETE CASCADE,
     FOREIGN KEY (`pset_id`) REFERENCES pset(`pset_id`) ON DELETE CASCADE,
