@@ -55,7 +55,7 @@ const ItemService = {
             const res = await fetch(`${itemsUrl}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -67,7 +67,7 @@ const ItemService = {
             const res = await fetch(`${itemsUrl}/item?itemID=${itemID}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);

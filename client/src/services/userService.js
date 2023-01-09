@@ -43,7 +43,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}/user?userID=${userID}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -55,7 +55,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -67,7 +67,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}/students`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -79,7 +79,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}/teachers`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -91,7 +91,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}/email?userEmail=${userEmail}&userPassword=${userPassword}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
@@ -103,7 +103,7 @@ const UserService = {
             const res = await fetch(`${usersUrl}/username?userName=${userName}&userPassword=${userPassword}`, {
                 method: 'GET'
             });
-            const resObj = res.json();
+            const resObj = await res.json();
             return resObj.data;
         } catch (error) {
             console.log(error);
